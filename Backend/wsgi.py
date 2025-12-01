@@ -2,7 +2,7 @@ import sys
 import os
 
 # → Ruta absoluta al directorio de tu proyecto
-project_home = '/home/AngelRomero26/UTT-app-cifrado'
+project_home = '/home/angelr0195/UTT-app-cifrado/Backend'
 
 if project_home not in sys.path:
     sys.path.insert(0, project_home)
