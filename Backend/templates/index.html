@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo de Cifrado</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Plataforma de Cifrado</h1>
+
+    <label>Texto a procesar:</label>
+    <input type="text" id="texto" placeholder="Escribe algo...">
+
+    <label>Selecciona el algoritmo:</label>
+    <select id="modo">
+        <option value="aes">AES (Simétrico)</option>
+        <option value="rsa">RSA (Asimétrico)</option>
+        <option value="sha256">SHA-256 (Hash)</option>
+    </select>
+
+    <button id="btn">Procesar</button>
+
+    <div id="resultado" class="card"></div>
+</div>
+
+
+<script>
+document.getElementById("btn").addEventListener("click", async () => {
+
+    const texto = document.getElementById("texto").value;
+    const modo = document.getElementById("modo").value;
+
+    const respuesta = await fetch("/procesar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ texto, modo })
+    });
+
+    const data = await respuesta.json();
+
+    if (data.error) {
+        document.getElementById("resultado").innerHTML = `<p class='error'>${data.error}</p>`;
+        return;
+    }
+
+    document.getElementById("resultado").innerHTML = `
+        <h2>Resultado</h2>
+        <p><b>Texto original:</b> ${data.texto_original}</p>
+        <p><b>Algoritmo usado:</b> ${data.modo}</p>
+        <pre>${JSON.stringify(data.resultado, null, 2)}</pre>
+    `;
+});
+</script>
+
+</body>
+</html>
